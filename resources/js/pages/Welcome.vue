@@ -1,5 +1,57 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
+
+const vkidContainer = ref<HTMLDivElement | null>(null);
+
+onMounted(() => {
+    // Загрузка скрипта
+    const script = document.createElement('script');
+    script.src = "https://unpkg.com/@vkid/sdk@<3.0.0/dist-sdk/umd/index.js";
+    script.async = true;
+    script.onload = initVKID; // Инициализация после загрузки скрипта
+    document.head.appendChild(script);
+});
+
+const initVKID = () => {
+    if ('VKIDSDK' in window) {
+        const VKID = window.VKIDSDK;
+
+        VKID.Config.init({
+            app: 53915902,
+            redirectUrl: 'https://www.ping-check.ru',
+            responseMode: VKID.ConfigResponseMode.Callback,
+            source: VKID.ConfigSource.LOWCODE,
+            scope: '', // Заполните нужными доступами по необходимости
+        });
+
+        const oneTap = new VKID.OneTap();
+
+        oneTap.render({
+            container: vkidContainer.value, // Используем ref для контейнера
+            showAlternativeLogin: true
+        })
+            .on(VKID.WidgetEvents.ERROR, vkidOnError)
+            .on(VKID.OneTapInternalEvents.LOGIN_SUCCESS, (payload) => {
+                const code = payload.code;
+                const deviceId = payload.device_id;
+
+                VKID.Auth.exchangeCode(code, deviceId)
+                    .then(vkidOnSuccess)
+                    .catch(vkidOnError);
+            });
+    }
+};
+
+const vkidOnSuccess = (data: any) => {
+    // Обработка полученного результата
+    console.log('Успех:', data);
+};
+
+const vkidOnError = (error: any) => {
+    // Обработка ошибки
+    console.error('Ошибка:', error);
+};
 </script>
 
 <template>
@@ -18,9 +70,7 @@ import { Head, Link } from '@inertiajs/vue3';
                     Dashboard
                 </Link>
                 <template v-else>
-                    <button class="vk-button bg-[#5181B8]  cursor-pointer text-white font-medium py-3 px-6 rounded-md shadow-sm text-lg mx-2 my-2">
-                        Войти через VK
-                    </button>
+                    <div ref="vkidContainer"></div> <!-- Контейнер для виджета VKID -->
                 </template>
             </nav>
         </header>
@@ -28,9 +78,9 @@ import { Head, Link } from '@inertiajs/vue3';
             <main class="w-full max-w-[335px] flex-col-reverse overflow-hidden rounded-lg lg:max-w-4xl lg:flex-row text-white">
                 <div><h1 class="text-white text-4xl font-bold text-center mt-20">Ping-Check</h1></div>
                 <div class="mt-10 text-center">Пингуй и
-                <span
-                    class="ml-1 inline-flex space-x-1 font-medium text-[#f53003] underline underline-offset-4 dark:text-[#FF4433]"
-                >чекай</span>
+                    <span
+                        class="ml-1 inline-flex space-x-1 font-medium text-[#f53003] underline underline-offset-4 dark:text-[#FF4433]"
+                    >чекай</span>
                 </div>
             </main>
         </div>
@@ -39,6 +89,7 @@ import { Head, Link } from '@inertiajs/vue3';
     <div class="flex w-full justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0 bg-red-600">
     </div>
 </template>
+
 <style>
 .vk-button:hover {
     background-color: #4a76a8;
