@@ -11,6 +11,10 @@ Route::get('photos', function () {
     return Inertia::render('Photos');
 });
 
+Route::get('newfriends', function () {
+    return Inertia::render('NewFriends');
+});
+
 Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
