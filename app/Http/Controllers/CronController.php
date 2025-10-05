@@ -66,9 +66,10 @@ class CronController extends Controller
                 }
             }
 
-            $user->data = $userFriends;
-            $user->save();
-
+            if ($prettyData['response']['count'] > 0) {
+                $user->data = $userFriends;
+                $user->save();
+            }
 
         }
     }
