@@ -48,7 +48,7 @@ class CronController extends Controller
                             'data' => $newFriend,
                         ]);
 
-                        $this->vkService->sendMessage($user->TgUsers->chat_id, 'Добавлен новый друг ' . $newFriend);
+                        $this->vkService->sendMessage($user->TgUser->chat_id, 'Добавлен новый друг ' . $newFriend);
                     }
                 }
             }
