@@ -38,24 +38,24 @@ class VKService
 
         try {
 
-            $tgUser = TgUsers::updateOrCreate([
+            $tgUser = TgUsers::updateOrCreate(
                 [
                     'chat_id' => $chatId,
                     'user_id' => $userId,
-                    'user_name' => $userName,
+                    'name' => $userName,
                 ],
                 [
                     'name' => $userName,
                 ]
-            ]);
+            );
 
-            $vkUser = VkUsers::updateOrCreate([
+            $vkUser = VkUsers::updateOrCreate(
                 [
                     'user_id' => $userId,
                     'vk_id' => $vkId,
                 ],[
                 ]
-            ]);
+            );
 
         } catch (\Exception $e) {
             file_put_contents('errors.txt', $e->getMessage() . "\n" . $userName . "\n" . $userId);
