@@ -68,11 +68,9 @@ class VKService
             file_put_contents('errors.txt', $e->getMessage() . "\n" . $userName . "\n" . $userId);
         }
 
-
-
     }
 
-    protected function sendMessage($chatId, $message): bool
+    public function sendMessage($chatId, $message): bool
     {
         $botToken = env('TELEGRAM_TOKEN');
         $botApiUrl = "https://api.telegram.org/bot{$botToken}/sendMessage";

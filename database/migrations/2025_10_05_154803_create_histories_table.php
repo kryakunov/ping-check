@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('vk_users', function (Blueprint $table) {
+        Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tg_id')->index()->constrained('tg_users');
-            $table->string('vk_id');
-            $table->string('token')->nullable();
-            $table->json('data')->nullable();
+            $table->foreignId('owner_id')->index()->constrained('vk_users');
+            $table->integer('action');
+            $table->string('data');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('vk_users');
+        Schema::dropIfExists('histories');
     }
 };
