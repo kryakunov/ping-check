@@ -23,13 +23,13 @@ class CronController extends Controller
 
             $userFriends = $this->vkService->getUserFriends($user->vk_id, $user->token);
 
-            $prettyData = json_decode($userFriends, true);
+            $userFriendsPrettyData = json_decode($userFriends, true);
 
             if ($user->data) {
                 $oldData = json_decode($user->data, true)['response']['items'];
 
-                $newFriends = array_diff($oldData, $prettyData['response']['items']);
-                $deleteFriends = array_diff($prettyData['response']['items'], $oldData);
+                $newFriends = array_diff($oldData, $userFriendsPrettyData['response']['items']);
+                $deleteFriends = array_diff($userFriendsPrettyData['response']['items'], $oldData);
 
                 if (!empty($newFriends)) {
                     foreach ($newFriends as $newFriend) {
@@ -40,9 +40,9 @@ class CronController extends Controller
                         ]);
 
                         $userInfo = $this->vkService->getUserInfo($newFriend, $user->token);
-                        $prettyData = json_decode($userInfo, true);
+                        $userInfoPrettyData = json_decode($userInfo, true);
 
-                        $userName = $prettyData['response'][0]['first_name'] . ' ' . $prettyData['response'][0]['last_name'];
+                        $userName = $userInfoPrettyData['response'][0]['first_name'] . ' ' . $userInfoPrettyData['response'][0]['last_name'];
 
                         $this->vkService->sendMessage($user->TgUser->chat_id, 'Добавлен новый друг ' . $userName . ' https://vk.com/id' . $newFriend);
                     }
@@ -57,16 +57,16 @@ class CronController extends Controller
                         ]);
 
                         $userInfo = $this->vkService->getUserInfo($deleteFriend, $user->token);
-                        $prettyData = json_decode($userInfo, true);
+                        $userInfoPrettyData = json_decode($userInfo, true);
 
-                        $userName = $prettyData['response'][0]['first_name'] . ' ' . $prettyData['response'][0]['last_name'];
+                        $userName = $userInfoPrettyData['response'][0]['first_name'] . ' ' . $userInfoPrettyData['response'][0]['last_name'];
 
                         $this->vkService->sendMessage($user->TgUser->chat_id, 'Удален пользователь ' . $userName . ' https://vk.com/id' . $deleteFriend);
                     }
                 }
             }
 
-            if ($prettyData['response']['count'] > 0) {
+            if ($userFriendsPrettyData['response']['count'] > 0) {
                 $user->data = $userFriends;
                 $user->save();
             }
