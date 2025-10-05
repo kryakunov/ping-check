@@ -29,10 +29,19 @@ class VKService
         }
 
 
-        $vkId = trim(ltrim($text, 'id'));
+        $vkId = $this->clearVkUrl($text);
+
         if (!is_numeric($vkId)) {
-            $this->sendMessage($chatId, 'Пожалуйста, пришлите id пользователя или ссылку на его страничку');
-            die;
+
+            $response = $this->getUserInfo($vkId);
+            if (isset($response['response'][0]['id'])) {
+                $vkId = $response['response'][0]['id'];
+            }
+
+            if (!is_numeric($vkId)) {
+                $this->sendMessage($chatId, 'Пожалуйста, пришлите id пользователя или ссылку на его страничку');
+                die;
+            }
         }
 
         try {
@@ -57,7 +66,7 @@ class VKService
             );
 
             if ($vkUser->wasRecentlyCreated) {
-                $this->sendMessage($chatId, 'Пользователь успешно добавлен в отслеживание');
+                $this->sendMessage($chatId, 'Пользователь успешно добавлен в отслеживание. Как только у него появятся новые друзья или он кого-то удалит, бот пришлет вам уведомление.');
             } else {
                 $this->sendMessage($chatId, 'Этот пользователь уже отслеживается');
             }
@@ -122,5 +131,36 @@ class VKService
         $data = file_get_contents($url);
 
         return $data;
+    }
+
+    public function clearVkUrl($url)
+    {
+        $delete = [
+            "vk.ru",
+            "http://",
+            "https://",
+            " ",
+            "id",
+            "/"];
+
+        $replace = "";
+
+        // Делаем проверку на массив
+        if (is_array($url))
+        {
+
+            $url = array_diff($url, array('',' '));
+
+            foreach($url as $key => &$value){
+                $value = str_replace($delete, $replace, $value);
+            }
+
+            return $url;
+        }
+
+        $url = str_replace($delete, $replace, $url);
+        $url = trim($url);
+
+        return $url;
     }
 }
