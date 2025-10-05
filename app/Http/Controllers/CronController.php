@@ -39,6 +39,7 @@ class CronController extends Controller
                 $oldData = json_decode($user->data, true)['response']['items'];
 
                 $newFriends = array_diff($oldData, $prettyData['response']['items']);
+                $deleteFriends = array_diff($prettyData['response']['items'], $oldData);
 
                 if (!empty($newFriends)) {
                     foreach ($newFriends as $newFriend) {
@@ -49,6 +50,18 @@ class CronController extends Controller
                         ]);
 
                         $this->vkService->sendMessage($user->TgUser->chat_id, 'Добавлен новый друг ' . $newFriend);
+                    }
+                }
+
+                if (!empty($deleteFriends)) {
+                    foreach ($deleteFriends as $deleteFriend) {
+                        History::create([
+                            'owner_id' => $user->id,
+                            'action' => 2,
+                            'data' => $deleteFriend,
+                        ]);
+
+                        $this->vkService->sendMessage($user->TgUser->chat_id, 'Удален пользователь ' . $deleteFriend);
                     }
                 }
             }
