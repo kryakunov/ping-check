@@ -142,8 +142,8 @@ class VKService
         $delete = [
             "vk.ru",
             "vk.com",
-            "http://",
             "https://",
+            "http://",
             " ",
             "id",
             "/"];
