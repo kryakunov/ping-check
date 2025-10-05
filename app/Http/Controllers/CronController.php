@@ -21,7 +21,7 @@ class CronController extends Controller
 
         foreach($users as $user){
 
-            $userFriends = $this->vkService->getUserFriends($user->id, $user->token);
+            $userFriends = $this->vkService->getUserFriends($user->vk_id, $user->token);
 
             $prettyData = json_decode($userFriends, true);
 
