@@ -157,7 +157,7 @@ class VKService
             $url = array_diff($url, array('',' '));
 
             foreach($url as $key => &$value){
-                $value = str_replace($delete, $replace, $value);
+                $value = str_ireplace($delete, $replace, $value);
             }
 
             return $url;
