@@ -42,10 +42,10 @@ class VKService
                 [
                     'chat_id' => $chatId,
                     'user_id' => $userId,
-                    'name' => $userName,
                 ],
                 [
                     'name' => $userName,
+                    'user_login' => $userLogin,
                 ]
             );
 
@@ -56,6 +56,13 @@ class VKService
                 ],[
                 ]
             );
+
+            if ($vkUser->wasRecentlyCreated) {
+                $this->sendMessage($chatId, 'Пользователь успешно добавлен в отслеживание');
+            } else {
+                $this->sendMessage($chatId, 'Этот пользователь уже отслеживается');
+            }
+
 
         } catch (\Exception $e) {
             file_put_contents('errors.txt', $e->getMessage() . "\n" . $userName . "\n" . $userId);
