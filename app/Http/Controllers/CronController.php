@@ -37,28 +37,24 @@ class CronController extends Controller
 
             if ($user->data) {
                 $oldData = json_decode($user->data, true)['response']['items'];
-            }
 
-            $newFriends = array_diff($oldData, $prettyData['response']['items']);
+                $newFriends = array_diff($oldData, $prettyData['response']['items']);
 
-            if (!empty($newFriends)) {
-                foreach($newFriends as $newFriend){
-                    History::create([
-                        'owner_id' => $user->id,
-                        'action' => 1,
-                        'data' => $newFriend,
-                    ]);
+                if (!empty($newFriends)) {
+                    foreach ($newFriends as $newFriend) {
+                        History::create([
+                            'owner_id' => $user->id,
+                            'action' => 1,
+                            'data' => $newFriend,
+                        ]);
 
-                    $this->vkService->sendMessage($user->TgUsers->chat_id, 'Добавлен новый друг '. $newFriend);
+                        $this->vkService->sendMessage($user->TgUsers->chat_id, 'Добавлен новый друг ' . $newFriend);
+                    }
                 }
             }
 
             $user->data = $data;
             $user->save();
-
-
-            dd($newFriends);
-           // dd($prettyData['response']['count']);
 
 
         }
