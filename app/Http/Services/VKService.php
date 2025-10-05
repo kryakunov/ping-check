@@ -90,12 +90,12 @@ class VKService
         exit;
     }
 
-    public function getUserFriends($user)
+    public function getUserFriends($userId, $token)
     {
         $params = [
-            'user_id' => $user->vk_id,
+            'user_id' => $userId,
             'v' => 5.199,
-            'access_token' => $user->token,
+            'access_token' => $token,
         ];
 
         $queryString = http_build_query($params);
@@ -107,12 +107,12 @@ class VKService
         return $data;
     }
 
-    public function getUserInfo($user)
+    public function getUserInfo($userId, $token)
     {
         $params = [
-            'user_ids' => $user->vk_id,
+            'user_ids' => $userId,
             'v' => 5.199,
-            'access_token' => $user->token,
+            'access_token' => $token,
         ];
 
         $queryString = http_build_query($params);
