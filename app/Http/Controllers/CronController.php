@@ -21,9 +21,9 @@ class CronController extends Controller
 
         foreach($users as $user){
 
-            $data = $this->vkService->getUserFriends($user);
+            $userFriends = $this->vkService->getUserFriends($user);
 
-            $prettyData = json_decode($data, true);
+            $prettyData = json_decode($userFriends, true);
 
             if ($user->data) {
                 $oldData = json_decode($user->data, true)['response']['items'];
@@ -39,8 +39,8 @@ class CronController extends Controller
                             'data' => $newFriend,
                         ]);
 
-                        $data = $this->vkService->getUserInfo($user);
-                        $prettyData = json_decode($data, true);
+                        $userInfo = $this->vkService->getUserInfo($newFriend);
+                        $prettyData = json_decode($userInfo, true);
 
                         $userName = $prettyData['response'][0]['first_name'] . ' ' . $prettyData['response'][0]['last_name'];
 
@@ -56,8 +56,8 @@ class CronController extends Controller
                             'data' => $deleteFriend,
                         ]);
 
-                        $data = $this->vkService->getUserInfo($user);
-                        $prettyData = json_decode($data, true);
+                        $userInfo = $this->vkService->getUserInfo($deleteFriend);
+                        $prettyData = json_decode($userInfo, true);
 
                         $userName = $prettyData['response'][0]['first_name'] . ' ' . $prettyData['response'][0]['last_name'];
 
@@ -66,7 +66,7 @@ class CronController extends Controller
                 }
             }
 
-            $user->data = $data;
+            $user->data = $userFriends;
             $user->save();
 
 
