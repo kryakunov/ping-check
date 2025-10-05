@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('vk_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tg_id')->index()->constrained('tg_users');
+            $table->foreignId('tg_id');
             $table->string('vk_id');
             $table->string('token')->nullable();
             $table->json('data')->nullable();
