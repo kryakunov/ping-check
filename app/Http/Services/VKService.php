@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Http;
 class VKService
 {
     public function __construct(
-
     )
     {}
 
@@ -32,7 +31,7 @@ class VKService
 
         $vkId = trim(ltrim($text, 'id'));
         if (!is_numeric($vkId)) {
-            $this->sendMessage($chatId, 'Неверный id');
+            $this->sendMessage($chatId, 'Пожалуйста, пришлите id пользователя или ссылку на его страничку');
             die;
         }
 
@@ -89,5 +88,39 @@ class VKService
         http_response_code(200);
         echo 'OK';
         exit;
+    }
+
+    public function getUserFriends($user)
+    {
+        $params = [
+            'user_id' => $user->vk_id,
+            'v' => 5.199,
+            'access_token' => $user->token,
+        ];
+
+        $queryString = http_build_query($params);
+
+        $url = 'https://api.vk.ru/method/friends.get?'.$queryString;
+
+        $data = file_get_contents($url);
+
+        return $data;
+    }
+
+    public function getUserInfo($user)
+    {
+        $params = [
+            'user_ids' => $user->vk_id,
+            'v' => 5.199,
+            'access_token' => $user->token,
+        ];
+
+        $queryString = http_build_query($params);
+
+        $url = 'https://api.vk.ru/method/users.get?'.$queryString;
+
+        $data = file_get_contents($url);
+
+        return $data;
     }
 }

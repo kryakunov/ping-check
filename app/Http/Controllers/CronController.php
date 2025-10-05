@@ -21,17 +21,7 @@ class CronController extends Controller
 
         foreach($users as $user){
 
-            $params = [
-                'user_id' => $user->vk_id,
-                'v' => 5.199,
-                'access_token' => $user->token,
-            ];
-
-            $queryString = http_build_query($params);
-
-            $url = 'https://api.vk.ru/method/friends.get?'.$queryString;
-
-            $data = file_get_contents($url);
+            $data = $this->vkService->getUserFriends($user);
 
             $prettyData = json_decode($data, true);
 
@@ -49,7 +39,12 @@ class CronController extends Controller
                             'data' => $newFriend,
                         ]);
 
-                        $this->vkService->sendMessage($user->TgUser->chat_id, 'Добавлен новый друг ' . $newFriend);
+                        $data = $this->vkService->getUserInfo($user);
+                        $prettyData = json_decode($data, true);
+
+                        $userName = $prettyData['response'][0]['first_name'] . ' ' . $prettyData['response'][0]['last_name'];
+
+                        $this->vkService->sendMessage($user->TgUser->chat_id, 'Добавлен новый друг ' . $userName . ' https://vk.com/id' . $newFriend);
                     }
                 }
 
@@ -61,7 +56,12 @@ class CronController extends Controller
                             'data' => $deleteFriend,
                         ]);
 
-                        $this->vkService->sendMessage($user->TgUser->chat_id, 'Удален пользователь ' . $deleteFriend);
+                        $data = $this->vkService->getUserInfo($user);
+                        $prettyData = json_decode($data, true);
+
+                        $userName = $prettyData['response'][0]['first_name'] . ' ' . $prettyData['response'][0]['last_name'];
+
+                        $this->vkService->sendMessage($user->TgUser->chat_id, 'Удален пользователь ' . $userName . ' https://vk.com/id' . $deleteFriend);
                     }
                 }
             }
