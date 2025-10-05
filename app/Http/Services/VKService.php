@@ -33,7 +33,11 @@ class VKService
 
         if (!is_numeric($vkId)) {
 
-            $response = $this->getUserInfo($vkId);
+            $token = VkUsers::first()->token;
+
+            $response = $this->getUserInfo($vkId, $token);
+            $response = json_decode($response, true);
+
             if (isset($response['response'][0]['id'])) {
                 $vkId = $response['response'][0]['id'];
             }
@@ -137,6 +141,7 @@ class VKService
     {
         $delete = [
             "vk.ru",
+            "vk.com",
             "http://",
             "https://",
             " ",
