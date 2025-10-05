@@ -51,7 +51,7 @@ class VKService
 
             $vkUser = VkUsers::updateOrCreate(
                 [
-                    'user_id' => $userId,
+                    'tg_id' => $tgUser->id,
                     'vk_id' => $vkId,
                 ],[
                 ]
