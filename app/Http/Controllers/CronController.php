@@ -44,7 +44,8 @@ class CronController extends Controller
 
                         $userName = $userInfoPrettyData['response'][0]['first_name'] . ' ' . $userInfoPrettyData['response'][0]['last_name'];
 
-                        $this->vkService->sendMessage($user->TgUser->chat_id, 'Добавлен новый друг ' . $userName . ' https://vk.com/id' . $newFriend);
+                        $msg = 'У пользователя ' . $user->name . ' добавлен новый друг ' . $userName . ' https://vk.com/id' . $newFriend;
+                        $this->vkService->sendMessage($user->TgUser->chat_id, $msg);
                     }
                 }
 
@@ -61,7 +62,8 @@ class CronController extends Controller
 
                         $userName = $userInfoPrettyData['response'][0]['first_name'] . ' ' . $userInfoPrettyData['response'][0]['last_name'];
 
-                        $this->vkService->sendMessage($user->TgUser->chat_id, 'Удален пользователь ' . $userName . ' https://vk.com/id' . $deleteFriend);
+                        $msg = 'У пользователя ' . $user->name . ' удален из друзей ' . $userName . ' https://vk.com/id' . $deleteFriend;
+                        $this->vkService->sendMessage($user->TgUser->chat_id, $msg);
                     }
                 }
             }

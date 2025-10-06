@@ -38,6 +38,7 @@ class VKService
         }
 
         $vkId = $this->clearVkUrl($text);
+        $vkUserName = '';
 
         if (!is_numeric($vkId)) {
 
@@ -48,6 +49,7 @@ class VKService
 
             if (isset($response['response'][0]['id'])) {
                 $vkId = $response['response'][0]['id'];
+                $vkUserName = $response['response'][0]['first_name'] . ' ' . $response['response'][0]['last_name'];
             }
 
             if (!is_numeric($vkId)) {
@@ -74,6 +76,7 @@ class VKService
                     'tg_id' => $tgUser->id,
                     'vk_id' => $vkId,
                 ],[
+                    'name' => $vkUserName,
                 ]
             );
 
