@@ -28,6 +28,14 @@ class VKService
             $this->error();
         }
 
+        $text = trim($text);
+
+        if (!is_numeric($text)) {
+            if (strpos($text, 'vk.ru') !== false || strpos($text, 'vk.ru') !== false || strpos($text, 'id') !== false) {
+                $this->sendMessage($chatId, 'Пожалуйста, пришлите id пользователя или ссылку на его страничку');
+                die;
+            }
+        }
 
         $vkId = $this->clearVkUrl($text);
 
