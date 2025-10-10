@@ -20,7 +20,7 @@ class CronController extends Controller
         $users = VkUsers::all();
 
         foreach($users as $user){
-
+            sleep(1);
             $userFriends = $this->vkService->getUserFriends($user->vk_id, $user->token);
 
             $userFriendsPrettyData = json_decode($userFriends, true);
@@ -28,8 +28,8 @@ class CronController extends Controller
             if ($user->data) {
                 $oldData = json_decode($user->data, true)['response']['items'];
 
-                $newFriends = array_diff($oldData, $userFriendsPrettyData['response']['items']);
-                $deleteFriends = array_diff($userFriendsPrettyData['response']['items'], $oldData);
+                $newFriends = array_diff($userFriendsPrettyData['response']['items'], $oldData);
+                $deleteFriends = array_diff($oldData, $userFriendsPrettyData['response']['items']);
 
                 if (!empty($newFriends)) {
                     foreach ($newFriends as $newFriend) {
@@ -40,6 +40,7 @@ class CronController extends Controller
                         ]);
 
                         $userInfo = $this->vkService->getUserInfo($newFriend, $user->token);
+                        sleep(1);
                         $userInfoPrettyData = json_decode($userInfo, true);
 
                         $userName = $userInfoPrettyData['response'][0]['first_name'] . ' ' . $userInfoPrettyData['response'][0]['last_name'];
@@ -58,6 +59,7 @@ class CronController extends Controller
                         ]);
 
                         $userInfo = $this->vkService->getUserInfo($deleteFriend, $user->token);
+                        sleep(1);
                         $userInfoPrettyData = json_decode($userInfo, true);
 
                         $userName = $userInfoPrettyData['response'][0]['first_name'] . ' ' . $userInfoPrettyData['response'][0]['last_name'];
@@ -73,6 +75,7 @@ class CronController extends Controller
                 $user->save();
             }
 
+            file_put_contents('log.txt', date('d-m-Y-H-i-s') . " [ check ok ] " . FILE_APPEND);
         }
     }
 }
