@@ -5,7 +5,7 @@ use App\Http\Controllers\TelegramController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/', function(){
+Route::get('/', function(){
     dd(file_get_contents('log.txt'));
 });
 Route::post('/bot', TelegramController::class)->withoutMiddleware(['web', 'csrf'])->name('bot');
