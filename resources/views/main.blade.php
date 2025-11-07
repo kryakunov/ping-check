@@ -12,30 +12,6 @@
     <meta property="og:image" content="https://ping-check.ru/">
     <meta property="og:url" content="https://ping-check.ru/">
 
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@graph": [
-                {
-                    "@type": "WebSite",
-                    "name": "Ping-check",
-                    "url": "https://ping-check.ru/"
-                },
-                {
-                    "@context": "https://schema.org",
-                    "@type": "Organization",
-                    "name": "Ping-check",
-                    "url": "https://ping-check.ru/",
-                    "logo": "/logo.png",
-                    "contactPoint": {
-                        "@type": "ContactPoint",
-                        "areaServed": "RU",
-                        "availableLanguage": ["Russian"]
-                    }
-                }
-            ]
-        }
-    </script>
     <style>
         body {
 
@@ -116,7 +92,6 @@
 <header>
     <h1>Кого добавил друг в ВК 2025 — Обзор новых функций и лайфхаков</h1>
 </header>
-
 <article>
 <h1>Как узнать, кого добавил друг в ВК в 2025 году</h1>
 
