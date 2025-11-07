@@ -5,14 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Кого добавил друг в ВК 2025: Как узнать</title>
     <meta name="description" content="Узнайте, кого добавил ваш друг в ВК в 2025 году. Советы по проверке друзей, инструменты и прогнозы для социальной сети ВКонтакте.">
-    <meta name="keywords" content="кого добавил друг в вк 2025, друзья в вк, анализ друзей вк, прогноз друзей вк">
-    <meta name="author" content="Ваш сайт">
-    <link rel="canonical" href="https://ping-check.ru">
+    <link rel="canonical" href="https://ping-check.ru/">
     <!-- Open Graph для соцсетей -->
     <meta property="og:title" content="Кого добавил друг в ВК 2025: Как узнать">
     <meta property="og:description" content="Простые способы проверить, кого добавил друг в ВК в 2025 году.">
-    <meta property="og:image" content="https://example.com/image.jpg">
-    <meta property="og:url" content="https://example.com/kogo-dobavil-drug-v-vk-2025">
+    <meta property="og:image" content="https://ping-check.ru/">
+    <meta property="og:url" content="https://ping-check.ru/">
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "WebSite",
+                    "name": "Ping-check",
+                    "url": "https://ping-check.ru/"
+                },
+                {
+                    "@context": "https://schema.org",
+                    "@type": "Organization",
+                    "name": "Ping-check",
+                    "url": "https://ping-check.ru/",
+                    "logo": "/logo.png",
+                    "contactPoint": {
+                        "@type": "ContactPoint",
+                        "areaServed": "RU",
+                        "availableLanguage": ["Russian"]
+                    }
+                }
+            ]
+        }
+    </script>
     <style>
         body {
 
