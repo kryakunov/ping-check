@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Кого добавил друг в ВК 2025: Как узнать</title>
+    <title>Кого добавил друг в ВК 2025</title>
     <meta name="description" content="Узнайте, кого добавил ваш друг в ВК в 2025 году. Советы по проверке друзей, инструменты и прогнозы для социальной сети ВКонтакте.">
     <link rel="canonical" href="https://ping-check.ru/">
     <!-- Open Graph для соцсетей -->
-    <meta property="og:title" content="Кого добавил друг в ВК 2025: Как узнать">
+    <meta property="og:title" content="Кого добавил друг в ВК 2025">
     <meta property="og:description" content="Простые способы проверить, кого добавил друг в ВК в 2025 году.">
     <meta property="og:image" content="https://ping-check.ru/">
     <meta property="og:url" content="https://ping-check.ru/">
@@ -102,7 +102,7 @@
 </head>
 <body>
 <header>
-    <h1>Кого добавил друг в ВК 2025 — Обзор новых функций и лайфхаков</h1>
+    <h1>Кого добавил друг в ВК 2025</h1>
 </header>
 <article>
 <h2>Как узнать, кого добавил друг в ВК в 2025 году</h2>
