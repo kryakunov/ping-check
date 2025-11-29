@@ -6,6 +6,7 @@ use App\Http\Services\VKService;
 use App\Models\History;
 use App\Models\VkUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CronController extends Controller
 {
@@ -20,10 +21,16 @@ class CronController extends Controller
         $users = VkUsers::all();
 
         foreach($users as $user){
-            sleep(1);
             $userFriends = $this->vkService->getUserFriends($user->vk_id, $user->token);
 
             $userFriendsPrettyData = json_decode($userFriends, true);
+
+
+            if(!isset($userFriendsPrettyData['response'])) {
+                Log::error('Token invalid; user_id: ' . $user->vk_id. '; token: ' . $user->token);
+                Log::error($userFriendsPrettyData);
+                continue;
+            }
 
             if ($user->data) {
                 $oldData = json_decode($user->data, true)['response']['items'];
@@ -40,7 +47,6 @@ class CronController extends Controller
                         ]);
 
                         $userInfo = $this->vkService->getUserInfo($newFriend, $user->token);
-                        sleep(1);
                         $userInfoPrettyData = json_decode($userInfo, true);
 
                         $userName = $userInfoPrettyData['response'][0]['first_name'] . ' ' . $userInfoPrettyData['response'][0]['last_name'];
@@ -59,7 +65,7 @@ class CronController extends Controller
                         ]);
 
                         $userInfo = $this->vkService->getUserInfo($deleteFriend, $user->token);
-                        sleep(1);
+
                         $userInfoPrettyData = json_decode($userInfo, true);
 
                         $userName = $userInfoPrettyData['response'][0]['first_name'] . ' ' . $userInfoPrettyData['response'][0]['last_name'];

@@ -116,6 +116,8 @@ class VKService
 
     public function getUserFriends($userId, $token)
     {
+        sleep(1);
+
         $params = [
             'user_id' => $userId,
             'v' => 5.199,
@@ -133,6 +135,8 @@ class VKService
 
     public function getUserInfo($userId, $token)
     {
+        sleep(1);
+
         $params = [
             'user_ids' => $userId,
             'v' => 5.199,
