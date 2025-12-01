@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\VkUsers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class VKService
 {
@@ -22,6 +23,8 @@ class VKService
         $userName = $message['from']['first_name'] ?? ($message['from']['username'] ?? 'Unknown');
         $userLogin = $message['from']['username'] ?? null;
         $userId = $message['from']['id'] ?? '';
+
+        Log::error('TEXXXT: ' . $text);
 
 
         if (empty($text)) {
