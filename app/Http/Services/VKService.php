@@ -24,7 +24,7 @@ class VKService
         $userLogin = $message['from']['username'] ?? null;
         $userId = $message['from']['id'] ?? '';
 
-        Log::error('TEXXXT: ' . $text);
+        Log::error('user: ' . $userId . 'TEXXXT: ' . $text);
 
 
         if (empty($text)) {
