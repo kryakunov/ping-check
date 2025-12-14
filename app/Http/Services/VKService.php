@@ -24,7 +24,18 @@ class VKService
         $userLogin = $message['from']['username'] ?? null;
         $userId = $message['from']['id'] ?? '';
 
-        Log::error('user: ' . $userId . 'TEXXXT: ' . $text);
+        $tgUser = TgUsers::updateOrCreate(
+            [
+                'chat_id' => $chatId,
+                'user_id' => $userId,
+            ],
+            [
+                'name' => $userName,
+                'user_login' => $userLogin,
+            ]
+        );
+
+        Log::error('[ userId: ' . $userId . ' userLogin: ' . $userLogin . ' ] Text: ' . $text);
 
 
         if (empty($text)) {
@@ -63,16 +74,6 @@ class VKService
 
         try {
 
-            $tgUser = TgUsers::updateOrCreate(
-                [
-                    'chat_id' => $chatId,
-                    'user_id' => $userId,
-                ],
-                [
-                    'name' => $userName,
-                    'user_login' => $userLogin,
-                ]
-            );
 
             $vkUser = VkUsers::updateOrCreate(
                 [
