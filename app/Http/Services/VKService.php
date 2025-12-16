@@ -43,7 +43,11 @@ class VKService
 
 
         if (!is_numeric($text)) {
-            if (strpos($text, 'vk.ru') == false || strpos($text, 'vk.com') == false || strpos($text, 'id') == false) {
+            if (
+                strpos($text, 'vk.ru') === false &&
+                strpos($text, 'vk.com') === false &&
+                strpos($text, 'id') === false
+            ) {
                 $this->sendMessage($chatId, 'Пожалуйста, пришлите id пользователя или ссылку на его страничку');
                 die;
             }
