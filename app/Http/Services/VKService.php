@@ -19,10 +19,14 @@ class VKService
     {
         $chatId = $message['chat']['id'];
         $text = $message['text'] ?? '';
-       // $caption = $message['caption'] ?? 'no';
+        $text = trim($text);
         $userName = $message['from']['first_name'] ?? ($message['from']['username'] ?? 'Unknown');
         $userLogin = $message['from']['username'] ?? null;
         $userId = $message['from']['id'] ?? '';
+
+        if (empty($text)) {
+            $this->error();
+        }
 
         $tgUser = TgUsers::updateOrCreate(
             [
@@ -32,20 +36,15 @@ class VKService
             [
                 'name' => $userName,
                 'user_login' => $userLogin,
+                'active' => 1,
             ]
         );
 
         Log::error('[ userId: ' . $userId . ' userLogin: ' . $userLogin . ' ] Text: ' . $text);
 
 
-        if (empty($text)) {
-            $this->error();
-        }
-
-        $text = trim($text);
-
         if (!is_numeric($text)) {
-            if (strpos($text, 'vk.ru') !== false || strpos($text, 'vk.ru') !== false || strpos($text, 'id') !== false) {
+            if (strpos($text, 'vk.ru') == false || strpos($text, 'vk.com') == false || strpos($text, 'id') == false) {
                 $this->sendMessage($chatId, 'Пожалуйста, пришлите id пользователя или ссылку на его страничку');
                 die;
             }
@@ -59,7 +58,7 @@ class VKService
             $token = VkUsers::first()->token;
 
             $response = $this->getUserInfo($vkId, $token);
-            $response = json_decode($response, true);
+
 
             if (isset($response['response'][0]['id'])) {
                 $vkId = $response['response'][0]['id'];
@@ -70,10 +69,15 @@ class VKService
                 $this->sendMessage($chatId, 'Пожалуйста, пришлите id пользователя или ссылку на его страничку');
                 die;
             }
+
+            if (isset($response['response'][0]['can_access_closed']) && $response['response'][0]['can_access_closed'] == false) {
+                $msg = 'У пользователя ' . $vkUserName . ' закрытый профиль. Не могу получить список друзей';
+                $this->sendMessage($chatId, $msg);
+                die;
+            }
         }
 
         try {
-
 
             $vkUser = VkUsers::updateOrCreate(
                 [
@@ -132,18 +136,19 @@ class VKService
 
         $url = 'https://api.vk.ru/method/friends.get?'.$queryString;
 
-        $data = file_get_contents($url);
+        $data = json_decode(file_get_contents($url), true);
 
         return $data;
     }
 
     public function getUserInfo($userId, $token)
     {
-        sleep(1);
+        sleep(2);
 
         $params = [
             'user_ids' => $userId,
             'v' => 5.199,
+            'fields' => 'is_closed',
             'access_token' => $token,
         ];
 
@@ -151,7 +156,7 @@ class VKService
 
         $url = 'https://api.vk.ru/method/users.get?'.$queryString;
 
-        $data = file_get_contents($url);
+        $data =  json_decode(file_get_contents($url), true);
 
         return $data;
     }
@@ -164,26 +169,17 @@ class VKService
             "https://",
             "http://",
             " ",
-            "id",
             "/"];
 
         $replace = "";
 
-        // Делаем проверку на массив
-        if (is_array($url))
-        {
-
-            $url = array_diff($url, array('',' '));
-
-            foreach($url as $key => &$value){
-                $value = str_ireplace($delete, $replace, $value);
-            }
-
-            return $url;
-        }
-
         $url = str_replace($delete, $replace, $url);
         $url = trim($url);
+
+        // удаляем префикс id и оставляем только цифры
+        if (strlen($url) > 2 && $url[0] == 'i' && $url[1] == 'd' && is_numeric($url[2])) {
+            $url = ltrim($url, 'id');
+        }
 
         return $url;
     }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('vk_users', function (Blueprint $table) {
-            $table->string('name')->after('vk_id')->nullable();
+            $table->string('private')->after('vk_id')->default(0);
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('vk_users', function (Blueprint $table) {
-            $table->dropColumn('name');
+            $table->dropColumn('private');
         });
     }
 };
