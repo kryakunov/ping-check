@@ -58,7 +58,7 @@ class VKService
 
         if (!is_numeric($vkId)) {
 
-            $token = VkUsers::first()->token;
+            $token = VkUsers::first()->token ?? env('VK_TOKEN');
 
             $response = $this->getUserInfo($vkId, $token);
 
