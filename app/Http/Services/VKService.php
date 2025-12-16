@@ -36,7 +36,6 @@ class VKService
             [
                 'name' => $userName,
                 'user_login' => $userLogin,
-                'active' => 1,
             ]
         );
 
@@ -85,6 +84,7 @@ class VKService
                     'vk_id' => $vkId,
                 ],[
                     'name' => $vkUserName,
+                    'active' => 1,
                 ]
             );
 
